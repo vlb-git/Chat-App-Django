@@ -1,0 +1,17 @@
+{% extends "users_master.html.j2" %}
+
+{% block title %}Log in{% endblock %}
+
+{% block body %}
+    <h1>Log in</h1>
+    <form action="entry/"  method="post">
+    {%csrf_token%}
+        <label for="username">Username</label>
+        <input type="text" name="username" id="username"><br>
+
+        <label for="passwd">Password</label>
+        <input type="password" name="passwd" id="passwd"><br>
+        <br>
+        <input type="submit" value="Submit">
+    </form>
+{% endblock %}

@@ -1,0 +1,18 @@
+{% extends "users_master.html.j2" %}
+
+{% block title %}Users{% endblock %}
+
+{% block body %}
+<h1>Users</h1>
+<table>
+{% for user in usersList %}
+    {% with username=user.1 %}
+    <tr>
+        <td>{{username}}</td>
+        <td> <a href="/chat/chatwith/{{username}}/">Chat with {{username}}</a> </td>
+    </tr>
+    {% endwith %}
+
+{% endfor %}
+</table>
+{% endblock %}

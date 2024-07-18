@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        {#<link rel = 'stylesheet' href="{{url_for('static', filename='style.css')}}">#}
+        <title>{% block title %}Page Title{% endblock %}</title>
+        {% block head %}{% endblock %}
+    </head>
+<body>
+    <nav>
+        <a href="/">Home</a>
+        <a href="/users/">Users</a>
+
+        {% if "user" not in session %}
+        <a href="/login/" class="rightNav">Log In</a>
+        <a href="/signup/" class="rightNav">Sign Up</a>
+        {% else %}
+        <a href="/logout" class="rightNav">Logout</a>
+        <a href="/dashboard/" class="rightNav">Profile</a>
+        {% endif %}
+    </nav>
+    {% block body %}{% endblock %}
+</body>
+</html>

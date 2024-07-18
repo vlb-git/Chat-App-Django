@@ -1,0 +1,127 @@
+{% extends "chat_master.html.j2" %}
+{% block title %}Direct Message {{otherUser}}{% endblock %}
+
+{% block head %}
+{% load static %}
+<link rel="stylesheet" href="{% static 'style.css' %}">{% endblock %}
+
+{% block body %}
+
+<h1>Chat with {{otherUser}} </h1>
+<div id="message_board">
+{% for message in messages.0 %}
+    {% if request.session.user.1 == message.1 %}
+    {% with messageUser="currentUser" username=message.1 bracket=" (You)" %}
+    <div class="messageContainer" user="{{messageUser}}">
+    <span class="messageUsername">{{username}}{{bracket}}</span><div class="textMessage"><div class="textMessageText">{{message.2}}</div> <div class="textMessageDateAndTime"> {{message.5}} | {{message.6}}</div></div>
+    </div>
+    {% endwith %}
+    {% else %}
+    {% with messageUser="otherUser" username=message.1 bracket=""%}
+    <div class="messageContainer" user="{{messageUser}}">
+    <span class="messageUsername">{{username}}{{bracket}}</span><div class="textMessage"><div class="textMessageText">{{message.2}}</div> <div class="textMessageDateAndTime"> {{message.5}} | {{message.6}}</div></div>
+    </div>
+    {% endwith %}
+    {% endif %}
+    
+{% endfor %}
+</div>
+<br>
+<form action="send/" method="post" id="messageForm">
+{% csrf_token %}
+    <input type="text" id="message" name="message" placeholder="Type Here...">
+    <input type="submit" id="submitBtn" value="Send">
+</form>
+<script>
+    document.getElementById("messageForm").addEventListener("submit", function(e){
+        e.preventDefault();
+        sendMessage();
+    });
+    
+    {% if finalMessage %}
+    var finalMessageId = {{finalMessage}};
+    {% else %}
+    var finalMessageId = 0;
+    {% endif %}
+    var updating = false;
+    function sendMessage(){
+        const xhttp = new XMLHttpRequest();
+        xhttp.onload = function() {
+
+        }
+        xhttp.open("POST", "send/");
+        let postObj={
+            message:document.getElementById("message").value
+        }
+        let csrf_token = document.querySelector('[name=csrfmiddlewaretoken]').value;
+        xhttp.setRequestHeader('X-CSRFToken', csrf_token);
+        xhttp.setRequestHeader("Content-type", "application/json; charset=UTF-8");
+        xhttp.send(JSON.stringify(postObj));
+        console.log("sent message");
+        updateMessages();
+        document.getElementById("message").value="";
+    }
+    function updateMessages(){
+        if(updating){
+            return
+        }
+        else{
+            updating=true;
+        }
+        const xhttp = new XMLHttpRequest();
+        xhttp.onload = function() {
+            {#
+            //console.log(this.response);
+            //console.log("updated")
+            #}
+            updated_messages = JSON.parse(this.response);
+            //console.log(updated_messages);
+            var start_index = 1;
+            if (finalMessageId==0){
+                start_index = 0;
+            }
+            if(updated_messages.length==0){
+                return
+            }
+            if (updated_messages.length>1 || (updated_messages.length>0 && finalMessageId==0)){
+                for(let i=start_index;i<updated_messages.length;i++){
+                    let username = "";
+                    var message_element = document.createElement("div");
+                    message_element.setAttribute("class", "messageContainer")
+                    
+                    var message_text = document.createElement("div");
+                    if(updated_messages[i][1]=='{{request.session.user.1}}'){
+                        message_element.setAttribute("user", "currentUser");
+                        username = `${updated_messages[i][1]} (You)`
+                    }
+                    else{
+                        message_element.setAttribute("user", "otherUser");
+                        username = `${updated_messages[i][1]}`
+                    }
+                    message_element.innerHTML = `<span class="messageUsername">${username}</span>`
+                    message_text.setAttribute("class", "textMessage");
+                    message_text.innerHTML = `<div class="textMessageText">${updated_messages[i][2]}</div> <div class="textMessageDateAndTime">${updated_messages[i][5]} | ${updated_messages[i][6]}</div>`
+
+                    finalMessageId+=1;
+
+                }
+                message_element.appendChild(message_text);
+                document.getElementById("message_board").appendChild(message_element);
+
+                //console.log(JSON.parse(this.response));
+            }
+        }
+        xhttp.open("POST", "get_update/");
+        let csrf_token = document.querySelector('[name=csrfmiddlewaretoken]').value;
+        let postObj={
+            final:finalMessageId
+        }
+        xhttp.setRequestHeader('X-CSRFToken', csrf_token);
+        xhttp.setRequestHeader("Content-type", "application/json; charset=UTF-8");
+        xhttp.send(JSON.stringify(postObj));
+        updating=false;
+    }
+    setInterval(updateMessages,1500);
+</script>
+
+{% endblock %}

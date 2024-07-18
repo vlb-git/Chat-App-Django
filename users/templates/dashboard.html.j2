@@ -1,0 +1,9 @@
+{% extends "users_master.html.j2" %}
+
+{% block title %} Hello, {{ request.session.user.1 }} {% endblock %}
+
+{% block body%}
+
+<h1> Hello, {{request.session.user.1}} </h1>
+
+{% endblock %}
