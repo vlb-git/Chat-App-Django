@@ -66,8 +66,19 @@
         {% for user in usersList %}
         {% with username=user.1 %}
         <tr>
-            <td>{{ username }}</td>
-            <td><a href="/chat/chatwith/{{ username }}/">Chat with {{ username }}</a></td>
+            {% if currentUser == username %}
+                <td>{{ username }} (You)</td>
+            {% else %}
+                <td>{{ username }}</td>
+            {% endif %}
+            
+            <td><a href="/chat/chatwith/{{ username }}/">Chat with 
+            {% if currentUser == username %} 
+            {{ username }} (Yourself) 
+            {% else %} 
+            {{ username }} 
+            {% endif %}
+            </a></td>
         </tr>
         {% endwith %}
         {% endfor %}

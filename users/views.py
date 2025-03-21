@@ -50,7 +50,8 @@ def users_page(request):
     if "user" in request.session:
         template = loader.get_template('users.html.j2')
         context = {
-            "usersList" : usersList
+            "usersList" : usersList,
+            "currentUser": request.session["user"][1]
         }
         return HttpResponse(template.render(context, request))
     else:

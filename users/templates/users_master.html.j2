@@ -4,12 +4,14 @@
     <head>
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <link rel="stylesheet" href="{% static 'style.css' %}">
-        <title>{% block title %}Page Title{% endblock %}</title>
+        <title>
+            {% block title %}Page Title{% endblock %}
+        </title>
         <style>
             .bodyUrl {
                 display: inline-block;
                 text-decoration: none;
-                color: black;
+                color:rgb(0, 0, 0);
                 background-color:rgb(98, 255, 0); /* Primary button color */
                 padding: 10px 20px;
                 border-radius: 5px;
@@ -17,6 +19,9 @@
                 font-size: 1.2em;
                 font-weight: bold;
                 text-align: center;
+            }
+            .bodyUrl:visited{
+                color: black;
             }
             .bodyUrl:hover {
                 background-color:rgb(30, 179, 0); /* Darker shade for hover */
