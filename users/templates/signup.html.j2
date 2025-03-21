@@ -3,22 +3,103 @@
 {% block title %}Sign Up{% endblock %}
 
 {% block body %}
+<style>
+    .signup-container {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        height: 90vh;
+        padding: 20px;
+    }
+
+    .signup-container h1 {
+        color: rgb(98, 255, 0); /* Highlighted green to match the button theme */
+        font-size: 2.5em;
+        margin-bottom: 20px;
+    }
+
+    .signup-form {
+        width: 100%;
+        max-width: 400px;
+        background-color: rgb(40, 40, 40); /* Slightly lighter than the main background */
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.5);
+    }
+
+    .signup-form label {
+        display: block;
+        margin-bottom: 5px;
+        color: white;
+        font-size: 1.1em;
+    }
+
+    .signup-form input[type="text"],
+    .signup-form input[type="email"],
+    .signup-form input[type="password"],
+    .signup-form input[type="date"] {
+        width: 100%;
+        padding: 10px;
+        margin-bottom: 15px;
+        border: 1px solid #555;
+        border-radius: 5px;
+        background-color: rgb(29, 29, 29); /* Matches the page background */
+        color: white;
+        font-size: 1em;
+    }
+
+    .signup-form input[type="submit"] {
+        width: 100%;
+        padding: 10px;
+        font-size: 1.2em;
+        font-weight: bold;
+        color: black;
+        background-color: rgb(98, 255, 0); /* Matches button color scheme */
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+
+    .signup-form input[type="submit"]:hover {
+        background-color: rgb(30, 179, 0); /* Darker green on hover */
+        transition: background-color 0.3s;
+    }
+
+    .signup-form a {
+        color: rgb(98, 255, 0); /* Links match the primary green color */
+        text-decoration: none;
+        font-size: 1em;
+        display: block;
+        margin-top: 10px;
+        text-align: center;
+    }
+
+    .signup-form a:hover {
+        text-decoration: underline;
+    }
+</style>
+
+<div class="signup-container">
     <h1>Sign Up</h1>
-    <form action="entry/" method="post">
-    {%csrf_token%}
+    <form class="signup-form" action="entry/" method="post">
+        {% csrf_token %}
         <label for="username">Username</label>
-        <input type="text" name="username" id="username"><br>
+        <input type="text" name="username" id="username" placeholder="Enter your username">
 
         <label for="email">Email</label>
-        <input type="email" name="email" id="email"><br>
+        <input type="email" name="email" id="email" placeholder="Enter your email">
 
         <label for="passwd">Password</label>
-        <input type="password" name="passwd" id="passwd"><br>
-        <label for="passwd">Repeat Password</label>
-        <input type="password" name="passwd" id="passwd"><br>
-        <br>
+        <input type="password" name="passwd" id="passwd" placeholder="Enter your password">
+
+        <label for="passwd-repeat">Repeat Password</label>
+        <input type="password" name="passwd-repeat" id="passwd-repeat" placeholder="Repeat your password">
+
         <label for="dob">Date of Birth</label>
-        <input type="date" name="dob" id="dob" class="keyInput">
+        <input type="date" name="dob" id="dob">
+
         <input type="submit" value="Submit">
     </form>
+</div>
 {% endblock %}

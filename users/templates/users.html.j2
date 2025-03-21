@@ -3,16 +3,74 @@
 {% block title %}Users{% endblock %}
 
 {% block body %}
-<h1>Users</h1>
-<table>
-{% for user in usersList %}
-    {% with username=user.1 %}
-    <tr>
-        <td>{{username}}</td>
-        <td> <a href="/chat/chatwith/{{username}}/">Chat with {{username}}</a> </td>
-    </tr>
-    {% endwith %}
+<style>
+    .users-container {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        padding: 20px;
+    }
 
-{% endfor %}
-</table>
+    .users-container h1 {
+        color: rgb(98, 255, 0); /* Highlighted green */
+        font-size: 2.5em;
+        margin-bottom: 20px;
+    }
+
+    .users-table {
+        width: 80%;
+        border-collapse: collapse;
+        margin-top: 20px;
+        background-color: rgb(40, 40, 40); /* Matches the dark theme */
+        border-radius: 8px;
+        overflow: hidden;
+    }
+
+    .users-table th, .users-table td {
+        border: 1px solid rgb(60, 60, 60);
+        padding: 15px;
+        text-align: left;
+        color: white;
+    }
+
+    .users-table th {
+        background-color: rgb(98, 255, 0); /* Header background */
+        color: black; /* Header text color */
+        font-weight: bold;
+    }
+
+    .users-table tr:nth-child(even) {
+        background-color: rgb(29, 29, 29); /* Alternating row color */
+    }
+
+    .users-table tr:hover {
+        background-color: rgb(50, 50, 50); /* Highlight row on hover */
+        transition: background-color 0.3s;
+    }
+
+    .users-table a {
+        text-decoration: none;
+        color: rgb(98, 255, 0); /* Link matches the primary green */
+        font-weight: bold;
+    }
+
+    .users-table a:hover {
+        text-decoration: underline;
+    }
+</style>
+
+<div class="users-container">
+    <h1>Users</h1>
+    <table class="users-table">
+        {% for user in usersList %}
+        {% with username=user.1 %}
+        <tr>
+            <td>{{ username }}</td>
+            <td><a href="/chat/chatwith/{{ username }}/">Chat with {{ username }}</a></td>
+        </tr>
+        {% endwith %}
+        {% endfor %}
+    </table>
+</div>
 {% endblock %}

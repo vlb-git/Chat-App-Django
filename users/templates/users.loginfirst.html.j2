@@ -1,0 +1,45 @@
+{% extends "users_master.html.j2" %}
+
+{% block title %}Users{% endblock %}
+
+{% block body %}
+<style>
+    .users-container {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        height: 90vh;
+        text-align: center;
+    }
+
+    .users-container h1 {
+        color: rgb(98, 255, 0); /* Highlighted green */
+        font-size: 2.5em;
+        margin-bottom: 20px;
+    }
+
+    .users-container a {
+        display: inline-block;
+        text-decoration: none;
+        color: white;
+        background-color: rgb(98, 255, 0); /* Primary button color */
+        padding: 10px 20px;
+        border-radius: 5px;
+        font-size: 1.2em;
+        font-weight: bold;
+        margin-top: 20px;
+        transition: background-color 0.3s, transform 0.2s;
+    }
+
+    .users-container a:hover {
+        background-color: rgb(30, 179, 0); /* Darker green on hover */
+        transform: scale(1.05); /* Slight zoom effect */
+    }
+</style>
+
+<div class="users-container">
+    <h1>Users</h1>
+    <a href="/users/login/">Please Login First</a>
+</div>
+{% endblock %}

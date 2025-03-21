@@ -54,4 +54,5 @@ def users_page(request):
         }
         return HttpResponse(template.render(context, request))
     else:
-        return HttpResponse("Please log in first!")
+        template = loader.get_template('users.loginfirst.html.j2')
+        return HttpResponse(template.render({}, request))

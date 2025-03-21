@@ -3,15 +3,93 @@
 {% block title %}Log in{% endblock %}
 
 {% block body %}
+<style>
+    .login-container {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        height: 80vh;
+        padding: 20px;
+    }
+
+    .login-container h1 {
+        color: rgb(98, 255, 0); /* Highlighted green to match the button theme */
+        font-size: 2.5em;
+        margin-bottom: 20px;
+    }
+
+    .login-form {
+        width: 100%;
+        max-width: 400px;
+        background-color: rgb(40, 40, 40); /* Slightly lighter than the main background */
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.5);
+    }
+
+    .login-form label {
+        display: block;
+        margin-bottom: 5px;
+        color: white;
+        font-size: 1.1em;
+    }
+
+    .login-form input[type="text"],
+    .login-form input[type="password"] {
+        width: 100%;
+        padding: 10px;
+        margin-bottom: 15px;
+        border: 1px solid #555;
+        border-radius: 5px;
+        background-color: rgb(29, 29, 29); /* Matches the page background */
+        color: white;
+        font-size: 1em;
+    }
+
+    .login-form input[type="submit"] {
+        width: 100%;
+        padding: 10px;
+        font-size: 1.2em;
+        font-weight: bold;
+        color: black;
+        background-color: rgb(98, 255, 0); /* Matches button color scheme */
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+
+    .login-form input[type="submit"]:hover {
+        background-color: rgb(30, 179, 0); /* Darker green on hover */
+        transition: background-color 0.3s;
+    }
+
+    .login-form a {
+        color: rgb(98, 255, 0); /* Links match the primary green color */
+        text-decoration: none;
+        font-size: 1em;
+        display: block;
+        margin-top: 10px;
+        text-align: center;
+    }
+
+    .login-form a:hover {
+        text-decoration: underline;
+    }
+</style>
+
+<div class="login-container">
     <h1>Log in</h1>
-    <form action="entry/"  method="post">
-    {%csrf_token%}
+    <form class="login-form" action="entry/" method="post">
+        {% csrf_token %}
         <label for="username">Username</label>
-        <input type="text" name="username" id="username"><br>
+        <input type="text" name="username" id="username" placeholder="Enter your username">
 
         <label for="passwd">Password</label>
-        <input type="password" name="passwd" id="passwd"><br>
-        <br>
+        <input type="password" name="passwd" id="passwd" placeholder="Enter your password">
+
         <input type="submit" value="Submit">
+        <a href="/users/signup/">Don't have an account? Sign Up Here</a>
     </form>
+</div>
 {% endblock %}
