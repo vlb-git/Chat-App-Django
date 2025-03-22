@@ -89,6 +89,10 @@
         <input type="password" name="passwd" id="passwd" placeholder="Enter your password">
 
         <input type="submit" value="Submit">
+        {%if message != ''%}
+        <p style="color:red;">{{message}}</p>
+        <br>
+        {%endif%}
         <a href="/users/signup/">Don't have an account? Sign Up Here</a>
     </form>
 </div>

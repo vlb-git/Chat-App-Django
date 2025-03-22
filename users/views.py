@@ -3,18 +3,25 @@ from django.http import HttpResponse
 from django.template import loader
 
 import users_lib as Users
+import html
 
 
 def login_page(request):
-    return render(request, 'login.html.j2', locals())
+    message = request.GET.get('m','')
+    template = loader.get_template('login.html.j2')
+    return HttpResponse(template.render({'message': message}, request))
 
 def signup_page(request):
-    return render(request, 'signup.html.j2', locals())
+    message = request.GET.get('m','')
+    template = loader.get_template('signup.html.j2')
+    return HttpResponse(template.render({'message': message}, request))
 
 def signup_entry(request):
     if request.method=="POST":
         user_object = Users.Users()
         username = request.POST["username"]
+        if user_object.findUser(username):
+            return redirect("/users/signup?m=That name is already taken")
         email = request.POST["email"]
         dob = request.POST["dob"]
         user_object.createUser(username, email, request.POST["passwd"], dob)
@@ -31,6 +38,7 @@ def login_entry(request):
             request.session["user"] = users.findUser(username)[0][:3] + users.findUser(username)[0][4:]
             return redirect("/users/dashboard/")
         else:
+            return redirect("/users/login?m=username or password is incorrect")
             return HttpResponse("username or password is incorrect.")
 
 def logout(request):
@@ -42,7 +50,8 @@ def dashboard(request):
     if "user" in request.session:
         return render(request, 'dashboard.html.j2', locals())
     else:
-        return HttpResponse("Please log in first!")
+        return redirect("/users/login")
+        #return HttpResponse("Please log in first!")
     
 def users_page(request):
     users = Users.Users()
