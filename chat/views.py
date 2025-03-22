@@ -43,14 +43,19 @@ def chat_with_send(request, username):
     if not users.findUser(username):
         return HttpResponse("There is no user with this name! :(")
     if request.method=="POST":
+        print("POST Request Content:")
         print(request.POST)
+        try:
+            data = json.loads(request.body)
+        except json.JSONDecodeError:
+            return HttpResponse("invalid data received")
         chat = Chat.Chat("dm", currentUser=request.session["user"][1], otherUser=username)
 
         #recordDict = json.loads(request.body)["message"]
 
-        recordDict = request.POST["message"]
+        recordDict = data["message"]
         chat.recordMessage(recordDict)
-        print(request.POST)
+        print(data)
         return redirect(f"/chat/chatwith/{username}/")
     return HttpResponse(f"chatwith {username}")
 

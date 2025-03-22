@@ -53,9 +53,12 @@
         let postObj={
             message:document.getElementById("message").value
         }
+        console.log("sent value:");
+        console.log(postObj);
         let csrf_token = document.querySelector('[name=csrfmiddlewaretoken]').value;
         xhttp.setRequestHeader('X-CSRFToken', csrf_token);
         xhttp.setRequestHeader("Content-type", "application/json; charset=UTF-8");
+        console.log(JSON.stringify(postObj));
         xhttp.send(JSON.stringify(postObj));
         console.log("sent message");
         updateMessages();
@@ -70,10 +73,9 @@
         }
         const xhttp = new XMLHttpRequest();
         xhttp.onload = function() {
-            {#
             //console.log(this.response);
             //console.log("updated")
-            #}
+            console.log("updated")
             updated_messages = JSON.parse(this.response);
             //console.log(updated_messages);
             var start_index = 1;
@@ -83,6 +85,7 @@
             if(updated_messages.length==0){
                 return
             }
+            console.log(finalMessageId)
             if (updated_messages.length>1 || (updated_messages.length>0 && finalMessageId==0)){
                 for(let i=start_index;i<updated_messages.length;i++){
                     let username = "";
@@ -108,7 +111,7 @@
                 message_element.appendChild(message_text);
                 document.getElementById("message_board").appendChild(message_element);
 
-                //console.log(JSON.parse(this.response));
+                console.log(JSON.parse(this.response));
             }
         }
         xhttp.open("POST", "get_update/");
@@ -121,7 +124,7 @@
         xhttp.send(JSON.stringify(postObj));
         updating=false;
     }
-    setInterval(updateMessages,1500);
+    setInterval(updateMessages,4000);
 </script>
 
 {% endblock %}
