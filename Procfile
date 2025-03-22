@@ -1,1 +1,1 @@
-web: gunicorn Test_Site.wsgi
+web: python manage.py migrate && gunicorn Test_Site.wsgi
