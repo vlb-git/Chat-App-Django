@@ -3,7 +3,27 @@
 
 {% block head %}
 {% load static %}
-<link rel="stylesheet" href="{% static 'style.css' %}">{% endblock %}
+<link rel="stylesheet" href="{% static 'style.css' %}">
+<style>
+    body, html {
+        height: 100%;
+        margin: 0;
+        overflow: hidden; /* Disable scrolling on body */
+    }
+    #message_board {
+        height: 63%; /* Fill the entire height of the viewport */
+        overflow-y: auto; /* Enable scrolling for this div */
+        /*border: 1px solid black; /* Optional, for visual clarity */
+        /*padding: 10px;*/
+    }
+    @media (max-width: 610px) {
+        #message_board{
+            height: 58%;
+        }
+    }
+</style>
+{% endblock %}
+
 
 {% block body %}
 
@@ -33,6 +53,13 @@
     <input type="submit" id="submitBtn" value="Send">
 </form>
 <script>
+    function scrollToBottom() {
+        const div = document.getElementById("message_board");
+        div.scrollTop = div.scrollHeight+100;
+    }
+
+    window.onload = scrollToBottom;
+
     document.getElementById("messageForm").addEventListener("submit", function(e){
         e.preventDefault();
         sendMessage();
@@ -93,15 +120,21 @@
             updated_messages = JSON.parse(this.response);
             //console.log(updated_messages);
             var start_index = 1;
-            if (finalMessageId==0){
+            if (finalMessageId==0){// first message
                 start_index = 0;
             }
             if(updated_messages.length==0){
                 return
             }
-            //console.log(finalMessageId)
+            console.log(finalMessageId)
             if (updated_messages.length>1 || (updated_messages.length>0 && finalMessageId==0)){
+                var new_message_count = 0;
                 for(let i=start_index;i<updated_messages.length;i++){
+                    console.log(`updated_messages[${i}][0]: ${updated_messages[i][0]}`)
+                    if(updated_messages[i][0]<=finalMessageId){
+                        continue;
+                    }
+                    new_message_count+=1;
                     let username = "";
                     var message_element = document.createElement("div");
                     message_element.setAttribute("class", "messageContainer")
@@ -122,8 +155,11 @@
                     finalMessageId+=1;
 
                 }
-                message_element.appendChild(message_text);
-                document.getElementById("message_board").appendChild(message_element);
+                if(new_message_count>0){
+                    message_element.appendChild(message_text);
+                    document.getElementById("message_board").appendChild(message_element);
+                    scrollToBottom();
+                }
 
                 //console.log(JSON.parse(this.response));
             }
@@ -138,7 +174,7 @@
         xhttp.send(JSON.stringify(postObj));
         updating=false;
     }
-    setInterval(updateMessages,4000);
+    setInterval(updateMessages,1000);
 </script>
 
 {% endblock %}

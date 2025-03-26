@@ -35,7 +35,13 @@ def login_entry(request):
         username = request.POST["username"]
         result = users.verifyUser(username, request.POST["passwd"])
         if result:
-            request.session["user"] = users.findUser(username)[0][:3] + users.findUser(username)[0][4:]
+            usr = users.findUser(username)
+            request.session["user"] = [
+                usr["userId"], 
+                usr["username"],
+                usr["email"],
+                usr["dateOfBirth"]
+            ]
             return redirect("/users/dashboard/")
         else:
             return redirect("/users/login?m=username or password is incorrect")
@@ -62,6 +68,7 @@ def users_page(request):
             "usersList" : usersList,
             "currentUser": request.session["user"][1]
         }
+        print(context)
         return HttpResponse(template.render(context, request))
     else:
         template = loader.get_template('users.loginfirst.html.j2')

@@ -56,8 +56,16 @@ form#messageForm{
     left:0;
     width: 100%;
     background-color: black;
-    height: 50px;
+    height: 10%;
     padding-top: 50px;
+}
+@media (max-width: 610px) {
+    form#messageForm{
+        height: 15%;
+    }
+    #messageForm input[type="text"]{
+        width: 30%;
+    }
 }
 #messageForm input[type="text"]{
     justify-content: center;

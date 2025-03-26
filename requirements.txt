@@ -1,7 +1,11 @@
 asgiref==3.8.1
 Django==5.1.7
+dnspython==2.7.0
+dotenv==0.9.9
 gunicorn==23.0.0
 packaging==24.2
+pymongo==4.11.3
+python-dotenv==1.1.0
 sqlparse==0.5.3
 tzdata==2025.1
 whitenoise==6.9.0
