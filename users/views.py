@@ -4,7 +4,6 @@ from django.template import loader
 
 import users_lib as Users
 import html
-import os
 
 
 def login_page(request):
@@ -56,7 +55,6 @@ def dashboard(request):
     
 def users_page(request):
     users = Users.Users()
-    print("SECRET_KEY:", os.environ.get("SECRET_KEY"))
     usersList = users.fetchAllUsers()
     if "user" in request.session:
         template = loader.get_template('users.html.j2')
