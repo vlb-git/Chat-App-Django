@@ -9,12 +9,13 @@
         height: 100%;
         margin: 0;
         overflow: hidden; /* Disable scrolling on body */
+        background-color: black;
     }
     #message_board {
-        height: 63%; /* Fill the entire height of the viewport */
+        height: 61%; /* Fill the entire height of the viewport */
         overflow-y: auto; /* Enable scrolling for this div */
         /*border: 1px solid black; /* Optional, for visual clarity */
-        /*padding: 10px;*/
+        padding: 10px;
     }
     #infoArea {
         height: 10px; /* Fill the entire height of the viewport */
@@ -24,13 +25,37 @@
             height: 58%;
         }
     }
+
+    @media (min-height: 400px) and (max-height: 586px) {
+        #message_board{
+            height: 56%;
+        }
+    }
+
+    @media (min-height: 586px) and (max-height: 609px) {
+        #message_board{
+            height: 56%;
+        }
+    }
+
+    @media (min-height: 609px) and (max-height: 800px) {
+        #message_board{
+            height: 60.5%;
+        }
+    }
+
+    @media (min-height: 800px) {
+        #message_board{
+            height: 66%;
+        }
+    }
 </style>
 {% endblock %}
 
 
 {% block body %}
 
-<h1>Chat with {{otherUser}} </h1>
+<h1 id="chat-h1">Chat with {{otherUser}} </h1>
 <div id="message_board">
 {% for message in messages.0 %}
     {% if request.session.user.1 == message.1 %}
@@ -53,7 +78,7 @@
 <form action="send/" method="post" id="messageForm">
 {% csrf_token %}
     <p id="infoArea"></p>
-    <input type="text" id="message" name="message" placeholder="Type Here...">
+    <input type="text" id="message" name="message" placeholder="Type Here..." autocomplete="off">
     <input type="submit" id="submitBtn" value="Send">
 </form>
 <script>
