@@ -4,6 +4,13 @@ from django.template import loader
 
 import users_lib as Users
 import html
+from pymongo import MongoClient
+import dotenv
+import os
+
+dotenv.load_dotenv()
+MONGO_URI = os.environ["MONGO_URI"]
+mongodbClient = MongoClient(MONGO_URI)
 
 
 def login_page(request):
@@ -18,7 +25,7 @@ def signup_page(request):
 
 def signup_entry(request):
     if request.method=="POST":
-        user_object = Users.Users()
+        user_object = Users.Users(mongodbClient=mongodbClient)
         username = request.POST["username"]
         if user_object.findUser(username):
             return redirect("/users/signup?m=That name is already taken")
@@ -30,7 +37,7 @@ def signup_entry(request):
     return redirect("/users/login/")
 
 def login_entry(request):
-    users = Users.Users()
+    users = Users.Users(mongodbClient=mongodbClient)
     if (request.method=="POST"):
         username = request.POST["username"]
         result = users.verifyUser(username, request.POST["passwd"])
@@ -60,7 +67,7 @@ def dashboard(request):
         #return HttpResponse("Please log in first!")
     
 def users_page(request):
-    users = Users.Users()
+    users = Users.Users(mongodbClient=mongodbClient)
     usersList = users.fetchAllUsers()
     if "user" in request.session:
         template = loader.get_template('users.html.j2')
