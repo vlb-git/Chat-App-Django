@@ -16,6 +16,9 @@
         /*border: 1px solid black; /* Optional, for visual clarity */
         /*padding: 10px;*/
     }
+    #infoArea {
+        height: 10px; /* Fill the entire height of the viewport */
+    }
     @media (max-width: 610px) {
         #message_board{
             height: 58%;
@@ -49,6 +52,7 @@
 <br>
 <form action="send/" method="post" id="messageForm">
 {% csrf_token %}
+    <p id="infoArea"></p>
     <input type="text" id="message" name="message" placeholder="Type Here...">
     <input type="submit" id="submitBtn" value="Send">
 </form>
@@ -58,11 +62,17 @@
         div.scrollTop = div.scrollHeight+100;
     }
 
+    function setInfoText(infoText) {
+        const p = document.getElementById("infoArea");
+        p.innerHTML = infoText;
+    }
+
     window.onload = scrollToBottom;
 
     document.getElementById("messageForm").addEventListener("submit", function(e){
         e.preventDefault();
         sendMessage();
+        setInfoText("Sending...")
     });
     
     {% if finalMessage %}
@@ -104,6 +114,7 @@
         var now = new Date();
         if ((now - lastActive)/1000>=60*15){
             console.log("15 minuites inactive");
+            setInfoText("15 minuites inactive. Please reload page");
             inactive = true;
         }
         if(updating){
@@ -158,6 +169,7 @@
                 if(new_message_count>0){
                     message_element.appendChild(message_text);
                     document.getElementById("message_board").appendChild(message_element);
+                    setInfoText("");
                     scrollToBottom();
                 }
 

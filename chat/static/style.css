@@ -57,7 +57,7 @@ form#messageForm{
     width: 100%;
     background-color: black;
     height: 10%;
-    padding-top: 50px;
+    padding-bottom: 50px;
 }
 @media (max-width: 610px) {
     form#messageForm{
